@@ -1,6 +1,9 @@
 module.exports = {
-  // secret data can be moved to env variables
-  // or a separate config
-  secret: 'mysecret',
-  root: process.cwd()
+    app: {
+        name: 'quiz-server',
+        version: '0.0.1'
+    },
+    server: {
+        port: process.env.NODE_APP_INSTANCE || 8080
+    }
 };
