@@ -12,7 +12,7 @@ const Topic = require('../models/topic');
  */
 async function getAllTopic(ctx, next) {
     let topics = await Topic.find({});
-
+    ctx.status = 200;
     ctx.body = topics.map(topic => topic.toObject());
     await next(); 
 }

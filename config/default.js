@@ -4,6 +4,6 @@ module.exports = {
         version: '0.0.1'
     },
     server: {
-        port: process.env.NODE_APP_INSTANCE || 8080
+        port: process.env.NODE_APP_INSTANCE || 3000
     }
 };
