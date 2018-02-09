@@ -17,4 +17,4 @@ $ node start
 
 ## Testing
 
-in developing
+in development
