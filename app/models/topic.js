@@ -12,7 +12,11 @@ const topicSchema = new mongoose.Schema({
   }
 }, {
   timestamps: true,
+  toJSON: {
+    virtuals: true
+  },
   toObject: {
+    // virtuals: true,
     transform(doc, ret) {
       // remove the __v of every document before returning the result
       delete ret.createdAt;
@@ -21,6 +25,12 @@ const topicSchema = new mongoose.Schema({
       return ret;
     }
   }
+});
+
+topicSchema.virtual('questions', {
+  ref: 'Question', // The model to use
+  localField: '_id', // Find people where `localField`
+  foreignField: 'topicId' // is equal to `foreignField`
 });
 
 topicSchema.statics.publicFields = ['title', 'imageUrl'];

@@ -19,6 +19,8 @@
     "lodash": "^4.17.5",
     "mongoose": "^5.0.4",
     "mongoose-beautiful-unique-validation": "^7.0.0",
+    "mongoose-random": "^0.1.1",
+    "mongoose-simple-random": "^0.4.1",
     "optimist": "*"
   },
   "devDependencies": {
