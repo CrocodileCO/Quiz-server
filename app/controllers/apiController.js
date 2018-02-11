@@ -169,7 +169,9 @@ async function removeQuestion(ctx,next) {
 
     await next();
 }
-
+/**
+ * @example curl -XGET "http://localhost:3000/api/topics/:topicId/questions"
+ */
 async function getAllQuestionsByTopic(ctx, next) {
     if (!mongoose.Types.ObjectId.isValid(ctx.params.topicId)) {
         ctx.throw(404);
@@ -194,7 +196,9 @@ function p_getRandomQuestionsByTopic(schema,conditions, fields, options) {
       })
     })
   }
-
+/**
+ * @example curl -XGET "http://localhost:3000/api/topics/:topicId/rnd"
+ */
 async function getRandomQuestionsByTopic(ctx, next) {
     if (!mongoose.Types.ObjectId.isValid(ctx.params.topicId)) {
         ctx.throw(404);
@@ -204,7 +208,7 @@ async function getRandomQuestionsByTopic(ctx, next) {
         limit = Number(ctx.request.query.limit); 
 
     let questions = await  p_getRandomQuestionsByTopic(Question, {topicId: { $in: [ctx.params.topicId] }},{},{limit:limit});
-    
+
     if (!questions) {
         ctx.throw(404);
     }
