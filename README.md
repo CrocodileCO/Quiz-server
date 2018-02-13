@@ -25,11 +25,11 @@ in development
 ## Topics
 #### Get topics
 ``` sh
-$ curl -XGET http://localhost:3000/topics
+$ curl -XGET http://localhost:3000/api/topics
 ```
 #### Get topic by id
 ``` sh
-$ curl -XGET http://localhost:3000/topics/:topicId
+$ curl -XGET http://localhost:3000/api/topics/:topicId
 ```
 #### Add topic
 ```sh
@@ -66,11 +66,11 @@ $ curl -XGET "http://localhost:3000/api/topics/:topicId/rnd?limit=2"
 ### Questions 
 #### Get questions
 ``` sh
-$ curl -XGET http://localhost:3000/questions
+$ curl -XGET http://localhost:3000/api/questions
 ```
 #### Get question by id
 ``` sh
-$ curl -XGET http://localhost:3000/questions/:questionId
+$ curl -XGET http://localhost:3000/api/questions/:questionId
 ```
 #### Add question 
 ```sh
