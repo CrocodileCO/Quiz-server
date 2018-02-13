@@ -12,6 +12,7 @@ $ git clone https://github.com/CrocodileCO/Quiz-server
 ### Run
 ```sh
 $ cd Quiz-server
+$ npm install
 $ node start
 ```
 
