@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const config = require('config');
 mongoose.Promise = Promise;
 
 const beautifyUnique = require('mongoose-beautiful-unique-validation');
@@ -18,7 +19,7 @@ mongoose.plugin(schema => {
 
 });
 
-mongoose.connect('mongodb://localhost/quiz-db', {
+mongoose.connect(config.mongodb.uri, {
   // server: {
   // //   socketOptions: {
   // //     keepAlive: 1
