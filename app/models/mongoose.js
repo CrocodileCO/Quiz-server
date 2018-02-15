@@ -5,7 +5,7 @@ const beautifyUnique = require('mongoose-beautiful-unique-validation');
 
 // вместо MongoError будет выдавать ValidationError (проще ловить и выводить)
 mongoose.plugin(beautifyUnique);
-mongoose.set('debug', true);
+//mongoose.set('debug', true);
 
 mongoose.plugin(schema => {
   if (!schema.options.toObject) {
@@ -18,13 +18,13 @@ mongoose.plugin(schema => {
 
 });
 
-mongoose.connect('mongodb://localhost/test', {
-  server: {
-    socketOptions: {
-      keepAlive: 1
-    },
-    poolSize: 5
-  }
+mongoose.connect('mongodb://localhost/quiz-db', {
+  // server: {
+  // //   socketOptions: {
+  // //     keepAlive: 1
+  // //   },
+  //   poolSize: 5
+  // }
 });
 
 module.exports = mongoose;
