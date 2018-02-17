@@ -215,8 +215,34 @@ async function getRandomQuestionsByTopic(ctx, next) {
 
     ctx.body = questions;
     await next();
-
-
+}
+/**
+ * @example curl -XGET "http://localhost:3000/api/questions/:questionId/inc_quantity?num=1"
+ * @param num - answer num
+ */
+async function incrementQuantityAnswer(ctx, next) {
+    if (!mongoose.Types.ObjectId.isValid(ctx.params.questionId)) {
+        ctx.throw(404);
+    }
+    let num = Number(ctx.request.query.num);
+    switch (num) {
+        case 1:
+            await Question.findByIdAndUpdate({_id : ctx.params.questionId}, {$inc : {answer1_num : 1}});
+            break;
+        case 2:
+            await Question.findByIdAndUpdate({_id : ctx.params.questionId}, {$inc : {answer2_num : 1}});
+            break;
+        case 3:
+            await Question.findByIdAndUpdate({_id : ctx.params.questionId}, {$inc : {answer3_num : 1}});
+            break;
+        case 4:
+            await Question.findByIdAndUpdate({_id : ctx.params.questionId}, {$inc : {answer4_num : 1}});
+            break;
+        default:
+            ctx.throw(404);
+    }
+    ctx.status= 200;
+    await next();
 }
 
-module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic};
+module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer};

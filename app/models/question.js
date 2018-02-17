@@ -22,6 +22,22 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: "Вариант 4 не должен быть пустым"
   },
+  answer1_num: {
+    type: Number,
+    default: 0
+  },
+  answer2_num: {
+    type: Number,
+    default: 0
+  },
+  answer3_num: {
+    type: Number,
+    default: 0
+  },
+  answer4_num: {
+    type: Number,
+    default: 0
+  },
   topicId: {
     type:     mongoose.Schema.Types.ObjectId,
     ref:      'Topic'
@@ -31,8 +47,8 @@ const questionSchema = new mongoose.Schema({
   toObject: {
     transform(doc, ret) {
       // remove the __v of every document before returning the result
-      delete ret.createdAt;
-      delete ret.updatedAt;
+      // delete ret.createdAt;
+      // delete ret.updatedAt;
       delete ret.__v;
       return ret;
     }
