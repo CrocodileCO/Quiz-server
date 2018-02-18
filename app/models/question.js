@@ -6,38 +6,14 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: "у вопроса должна быть картинка"
   },
-  answer1: {
-    type: String,
-    required: "Ответ не должен быть пустым"
-  },
-  answer2: {
-    type: String,
-    required: "Вариант 2 не должен быть пустым"
-  },
-  answer3: {
-    type: String,
-    required: "Вариант 3 не должен быть пустым"
-  },
-  answer4: {
-    type: String,
-    required: "Вариант 4 не должен быть пустым"
-  },
-  answer1_num: {
-    type: Number,
-    default: 0
-  },
-  answer2_num: {
-    type: Number,
-    default: 0
-  },
-  answer3_num: {
-    type: Number,
-    default: 0
-  },
-  answer4_num: {
-    type: Number,
-    default: 0
-  },
+  answers: [{
+    id: Number,
+    text: String,
+    pickAmount: {
+      type: Number,
+      default: 0
+    }
+  }],
   topicId: {
     type:     mongoose.Schema.Types.ObjectId,
     ref:      'Topic'
@@ -46,6 +22,9 @@ const questionSchema = new mongoose.Schema({
   //timestamps: true,
   toObject: {
     transform(doc, ret) {
+      for (let i = 0; i<4; i++){
+        delete ret.answers[i]._id;
+      }
       // remove the __v of every document before returning the result
       // delete ret.createdAt;
       // delete ret.updatedAt;
@@ -55,7 +34,7 @@ const questionSchema = new mongoose.Schema({
   }
 });
 
-questionSchema.statics.publicFields = ['imageUrl','answer1','answer2','answer3','answer4','topicId'];
+questionSchema.statics.publicFields = ['imageUrl','answers','topicId'];
 
 questionSchema.plugin(random); 
  

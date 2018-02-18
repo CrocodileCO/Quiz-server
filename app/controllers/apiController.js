@@ -124,7 +124,7 @@ async function getQuestionById(ctx, next) {
  */
 async function createQuestion(ctx, next) {
     let question = await Question.create(pick(ctx.request.body, Question.publicFields));
-    console.log(ctx.request.body);
+    //console.log(ctx.request.body);
     ctx.body = question.toObject();
     ctx.status = 201;
     await next();
@@ -225,23 +225,15 @@ async function incrementQuantityAnswer(ctx, next) {
         ctx.throw(404);
     }
     let num = Number(ctx.request.query.num);
-    switch (num) {
-        case 1:
-            await Question.findByIdAndUpdate({_id : ctx.params.questionId}, {$inc : {answer1_num : 1}});
-            break;
-        case 2:
-            await Question.findByIdAndUpdate({_id : ctx.params.questionId}, {$inc : {answer2_num : 1}});
-            break;
-        case 3:
-            await Question.findByIdAndUpdate({_id : ctx.params.questionId}, {$inc : {answer3_num : 1}});
-            break;
-        case 4:
-            await Question.findByIdAndUpdate({_id : ctx.params.questionId}, {$inc : {answer4_num : 1}});
-            break;
-        default:
-            ctx.throw(404);
+    let question =  await Question.findById(ctx.params.questionId).populate('answers');
+    if (num > 0 && num <= 4){
+        question.answers[num-1].pickAmount++;
+        await question.save();
+        ctx.status= 200;
     }
-    ctx.status= 200;
+    else 
+        ctx.throw(404);
+
     await next();
 }
 

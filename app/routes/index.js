@@ -2,7 +2,7 @@ const Router = require('koa-router'),
       KoaBody = require('koa-body'),
      {  getAllTopic,getTopicById, createTopic, removeTopic, updateTopic,
         getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion,
-        getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer
+        getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, test
     } = require('../controllers/apiController');
 
 const router = new Router({
@@ -24,8 +24,8 @@ const router = new Router({
         .delete('/questions/:questionId',           removeQuestion)
         .get('/questions/:questionId/inc_quantity', incrementQuantityAnswer)
         // topic - question
-        .get('/topics/:topicId/questions',      getAllQuestionsByTopic)
-        .get('/topics/:topicId/rnd',            KoaBody(),getRandomQuestionsByTopic);
+        .get('/topics/:topicId/questions',          getAllQuestionsByTopic)
+        .get('/topics/:topicId/rnd',                KoaBody(),getRandomQuestionsByTopic);
 
 module.exports = {
     routes () { return router.routes() },

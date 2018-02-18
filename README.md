@@ -99,7 +99,7 @@ $ curl -XPATCH "http://localhost:3000/api/questions/:questionId" \
 ``` sh
 $ curl -XDELETE "http://localhost:3000/api/questions/:questionId"
 ```
-#### Increment quantity statistic for answer
+#### Increment quantity statistics for answer
 ``` sh
 # @params num - answer index 
 $ curl -XGET "curl -XGET "http://localhost:3000/api/questions/:questionId/inc_quantity?num=1"
