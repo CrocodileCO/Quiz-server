@@ -2,7 +2,7 @@ const Router = require('koa-router'),
       KoaBody = require('koa-body'),
      {  getAllTopic,getTopicById, createTopic, removeTopic, updateTopic,
         getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion,
-        getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, test
+        getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, parseArtistStyle
     } = require('../controllers/apiController');
 
 const router = new Router({

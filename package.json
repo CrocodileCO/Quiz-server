@@ -21,7 +21,8 @@
     "mongoose-beautiful-unique-validation": "^7.0.0",
     "mongoose-random": "^0.1.1",
     "mongoose-simple-random": "^0.4.1",
-    "optimist": "*"
+    "optimist": "*",
+    "osmosis": "^1.1.6"
   },
   "devDependencies": {
     "frisby": "^0.8.5",

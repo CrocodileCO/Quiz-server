@@ -6,6 +6,10 @@ const User = require('../models/user');
 const Topic = require('../models/topic');
 const Question = require('../models/question');
 
+// TODO delete
+// const fs = require('fs');
+// const osmosis = require('osmosis');
+// const Artist = require('../models/artist');
 // ============== TOPICS ====================
 /**
  * @example curl -XGET "http://localhost:3000/topics"
@@ -236,5 +240,30 @@ async function incrementQuantityAnswer(ctx, next) {
 
     await next();
 }
+
+// async function parseArtist(ctx, next){
+//     var array = fs.readFileSync('1.txt').toString().split("\n");
+//     for(i in array) {
+//         let artistName = array[i].substring(0,array[i].length-1)
+//         let artist = await Artist.create(pick({'name': artistName}, Artist.publicFields));
+//         artist.save();
+//     }
+//     next();
+// }
+
+// async function parseArtistStyle(ctx, next) {
+//     let artists = await Artist.find({});
+//     //for (i in artists){
+//         let artist = artists[90];
+//         let styles = [];
+//         let uri = 'ru.wikipedia.org/wiki/'+artist.name.split(' ').join('_');
+//         console.log(uri);
+//         osmosis
+//                 .get(uri)
+//                 .set({'Title': 'title'})
+//                 .data(console.log)
+        
+//     //}
+// }
 
 module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer};

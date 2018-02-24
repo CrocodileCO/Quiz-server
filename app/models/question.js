@@ -14,6 +14,12 @@ const questionSchema = new mongoose.Schema({
       default: 0
     }
   }],
+  information: {
+    text: {
+      type: String,
+      default: ""
+    }
+  },
   topicId: {
     type:     mongoose.Schema.Types.ObjectId,
     ref:      'Topic'
@@ -34,7 +40,7 @@ const questionSchema = new mongoose.Schema({
   }
 });
 
-questionSchema.statics.publicFields = ['imageUrl','answers','topicId'];
+questionSchema.statics.publicFields = ['imageUrl','answers','topicId','information'];
 
 questionSchema.plugin(random); 
  
