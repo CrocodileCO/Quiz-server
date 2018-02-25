@@ -5,14 +5,15 @@ const pick = require('lodash/pick');
 const User = require('../models/user');
 const Topic = require('../models/topic');
 const Question = require('../models/question');
+const Artist = require('../models/artist');
 
 // TODO delete
 // const fs = require('fs');
 // const osmosis = require('osmosis');
-// const Artist = require('../models/artist');
+// 
 // ============== TOPICS ====================
 /**
- * @example curl -XGET "http://localhost:3000/topics"
+ * @example curl -XGET "http://localhost:3000/api/topics"
  */
 async function getAllTopic(ctx, next) {
     let topics = await Topic.find({});
@@ -22,7 +23,7 @@ async function getAllTopic(ctx, next) {
 }
 
 /**
- * @example curl -XGET "http://localhost:3000/topics/:topicId"
+ * @example curl -XGET "http://localhost:3000/api/topics/:topicId"
  */
 async function getTopicById(ctx, next) {
     if (!mongoose.Types.ObjectId.isValid(ctx.params.topicId)) {
@@ -241,6 +242,90 @@ async function incrementQuantityAnswer(ctx, next) {
     await next();
 }
 
+// ============== ARTISTS ====================
+/**
+ * @example curl -XGET "http://localhost:3000/api/rs/artists"
+ */
+async function getAllArtist(ctx, next) {
+    let artist = await Artist.find({});
+    ctx.status = 200;
+    ctx.body = artist.map(artist => artist.toObject());
+    await next(); 
+}
+
+/**
+ * @example curl -XGET "http://localhost:3000/api/rs/artists/:artistId"
+ */
+async function getArtistById(ctx, next) {
+    if (!mongoose.Types.ObjectId.isValid(ctx.params.artistId)) {
+        ctx.throw(404);
+    }
+
+    //.populate('questions')
+    let artist = await Artist.findById(ctx.params.artistId);
+    
+    if (!artist) {
+        ctx.throw(404);
+    }
+
+    ctx.body = artist.toObject();
+
+    await next();
+}
+
+/**
+ * @example curl -XPOST "http://localhost:3000/api/rs/artists" -d '{"title":"new artist"}' -H 'Content-Type: application/json'
+ */
+async function createArtist(ctx, next) {
+    let artist = await Artist.create(pick(ctx.request.body, Artist.publicFields));
+    //console.log(ctx.request.body);
+    ctx.body = artist.toObject();
+    ctx.status = 201;
+    await next();
+}
+
+/**
+ * @example curl -XPATCH "http://localhost:3000/api/rs/artists/:artistId" -d '{"title":"artistUp"}' -H 'Content-Type: application/json'
+ */
+async function updateArtist(ctx, next) {
+    if (!mongoose.Types.ObjectId.isValid(ctx.params.artistId)) {
+        ctx.throw(404);
+    }
+    
+    let artist = await Artist.findById(ctx.params.artistId);
+    
+    if (!artist) {
+        ctx.throw(404);
+    }
+
+    Object.assign(artist, pick(ctx.request.body, Artist.publicFields));
+    await artist.save();
+
+    ctx.body = artist.toObject();
+}
+
+/**
+ * @example curl -XDELETE "http://localhost:3000/api/rs/artists/:artistId"
+ */
+async function removeArtist(ctx, next) {
+    if (!mongoose.Types.ObjectId.isValid(ctx.params.artistId)) {
+        ctx.throw(404);
+    }
+    
+    let artist = await Artist.findById(ctx.params.artistId);
+    
+    if (!artist) {
+        ctx.throw(404);
+    }
+
+    await artist.remove();
+    ctx.status = 204;
+
+    await next();
+}
+
+
+// TODO: delete
 // async function parseArtist(ctx, next){
 //     var array = fs.readFileSync('1.txt').toString().split("\n");
 //     for(i in array) {
@@ -266,4 +351,4 @@ async function incrementQuantityAnswer(ctx, next) {
 //     //}
 // }
 
-module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer};
+module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, getAllArtist, getArtistById, createArtist, removeArtist, updateArtist};

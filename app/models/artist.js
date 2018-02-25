@@ -6,8 +6,8 @@ const artistSchema = new mongoose.Schema({
     required: "Отсутствует имя художника",
     unique: "Этот художник уже есть в базе"
   },
-  style: [{
-    title: String
+  styles: [{
+    type: String
   }]
 }, {
   toObject: {
@@ -18,5 +18,5 @@ const artistSchema = new mongoose.Schema({
   }
 });
 
-artistSchema.statics.publicFields = ['name', 'style'];
+artistSchema.statics.publicFields = ['name', 'styles'];
 module.exports = mongoose.model('Artist', artistSchema);
