@@ -1,4 +1,3 @@
-require ('newrelic');
 const http = require('http'),
       Koa = require('koa'),
       cors = require('@koa/cors'),
