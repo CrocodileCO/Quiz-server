@@ -6,7 +6,7 @@ const User = require('../models/user');
 const Topic = require('../models/topic');
 const Question = require('../models/question');
 const Artist = require('../models/artist');
-
+const ArtStyle = require('../models/artStyle')
 // TODO delete
 // const fs = require('fs');
 // const osmosis = require('osmosis');
@@ -324,14 +324,28 @@ async function removeArtist(ctx, next) {
     await next();
 }
 
+async function getArtStyles(ctx, next) {
+    let artStyles = await ArtStyle.find({});
+    ctx.status = 200;
+    ctx.body = artStyles.map(artStyle => artStyle.toObject());
+    await next(); 
+}
+
+async function createArtStyle(ctx, next) {
+    let artStyle = await ArtStyle.create(pick(ctx.request.body, ArtStyle.publicFields));
+    ctx.body = artStyle.toObject();
+    ctx.status = 201;
+    await next();
+}
+
 
 // TODO: delete
-// async function parseArtist(ctx, next){
-//     var array = fs.readFileSync('1.txt').toString().split("\n");
+// async function test(ctx, next){
+//     var array = fs.readFileSync('2.txt').toString().split("\n");
 //     for(i in array) {
-//         let artistName = array[i].substring(0,array[i].length-1)
-//         let artist = await Artist.create(pick({'name': artistName}, Artist.publicFields));
-//         artist.save();
+//         let artStyle = array[i]
+//         let style = await ArtStyle.create(pick({'title': artStyle}, ArtStyle.publicFields));
+//         style.save();
 //     }
 //     next();
 // }
@@ -351,4 +365,4 @@ async function removeArtist(ctx, next) {
 //     //}
 // }
 
-module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, getAllArtist, getArtistById, createArtist, removeArtist, updateArtist};
+module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, getAllArtist, getArtistById, createArtist, removeArtist, updateArtist, getArtStyles, createArtStyle};
