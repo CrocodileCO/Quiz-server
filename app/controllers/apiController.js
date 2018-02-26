@@ -193,7 +193,7 @@ async function getAllQuestionsByTopic(ctx, next) {
     await next();
 }
 
-function p_getRandomQuestionsByTopic(schema,conditions, fields, options) {
+function rndDataPromise(schema,conditions, fields, options) {
     return new Promise((resolve, reject) => {
         schema.findRandom(conditions, fields, options, function(err, results) {
         if (err) reject(err);
@@ -212,7 +212,7 @@ async function getRandomQuestionsByTopic(ctx, next) {
     if (Number(ctx.request.query.limit)>0)
         limit = Number(ctx.request.query.limit); 
 
-    let questions = await  p_getRandomQuestionsByTopic(Question, {topicId: { $in: [ctx.params.topicId] }},{},{limit:limit});
+    let questions = await  rndDataPromise(Question, {topicId: { $in: [ctx.params.topicId] }},{},{limit:limit});
 
     if (!questions) {
         ctx.throw(404);
@@ -338,6 +338,21 @@ async function createArtStyle(ctx, next) {
     await next();
 }
 
+async function getSimilarArtists (ctx, next) {
+    let artistIn = ctx.request.query.artist; 
+    if (!artistIn)
+        ctx.throw(404);
+
+    let artist = await Artist.findOne({'name': artistIn});
+
+    if (!artist) {
+        ctx.throw(404);
+    }
+    console.log(artist.styles);
+    let artists = await rndDataPromise(Artist, {'styles':{ $in: artist.styles}, 'name': {$ne:artist.name}},{},{limit:3});
+    ctx.body = artists.map(a => a.toObject());
+    await next(); 
+}
 
 // TODO: delete
 // async function test(ctx, next){
@@ -365,4 +380,4 @@ async function createArtStyle(ctx, next) {
 //     //}
 // }
 
-module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, getAllArtist, getArtistById, createArtist, removeArtist, updateArtist, getArtStyles, createArtStyle};
+module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, getAllArtist, getArtistById, createArtist, removeArtist, updateArtist, getArtStyles, createArtStyle, getSimilarArtists};

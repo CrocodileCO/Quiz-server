@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const random = require('mongoose-simple-random');
 
 const artistSchema = new mongoose.Schema({
   name: {
@@ -19,4 +20,7 @@ const artistSchema = new mongoose.Schema({
 });
 
 artistSchema.statics.publicFields = ['name', 'styles'];
+
+artistSchema.plugin(random); 
+
 module.exports = mongoose.model('Artist', artistSchema);

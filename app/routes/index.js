@@ -4,7 +4,7 @@ const Router = require('koa-router'),
         getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion,
         getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, parseArtistStyle,
         getAllArtist, getArtistById, createArtist, removeArtist, updateArtist,
-        getArtStyles, createArtStyle
+        getArtStyles, createArtStyle, getSimilarArtists
     } = require('../controllers/apiController');
 
 const router = new Router({
@@ -36,6 +36,7 @@ const router = new Router({
         .post('/rs/artists/',                       KoaBody(), createArtist)
         .patch('/rs/artists/:artistId',             KoaBody(), updateArtist)
         .delete('/rs/artists/:artistId',            removeArtist)
+        .get('/rs/similarArtists',                  KoaBody(), getSimilarArtists)
         // artStyle
         .get('/rs/artstyles',                       getArtStyles)
         .post('/rs/artstyles/',                     KoaBody(), createArtStyle);
