@@ -8,7 +8,7 @@ const Question = require('../models/question');
 const Artist = require('../models/artist');
 const ArtStyle = require('../models/artStyle')
 // TODO delete
-// const fs = require('fs');
+const fs = require('fs');
 // const osmosis = require('osmosis');
 // 
 // ============== TOPICS ====================
@@ -353,6 +353,12 @@ async function getSimilarArtists (ctx, next) {
     ctx.body = artists.map(a => a.toObject());
     await next(); 
 }
+async function getQuestionDb (ctx, next) {
+    let questions = await fs.readFileSync('test1.json','utf8');
+    ctx.body = questions;
+
+    await next();
+}
 
 // TODO: delete
 // async function test(ctx, next){
@@ -380,4 +386,4 @@ async function getSimilarArtists (ctx, next) {
 //     //}
 // }
 
-module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, getAllArtist, getArtistById, createArtist, removeArtist, updateArtist, getArtStyles, createArtStyle, getSimilarArtists};
+module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, getAllArtist, getArtistById, createArtist, removeArtist, updateArtist, getArtStyles, createArtStyle, getSimilarArtists, getQuestionDb};

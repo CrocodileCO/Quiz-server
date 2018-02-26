@@ -4,7 +4,7 @@ const Router = require('koa-router'),
         getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion,
         getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, parseArtistStyle,
         getAllArtist, getArtistById, createArtist, removeArtist, updateArtist,
-        getArtStyles, createArtStyle, getSimilarArtists
+        getArtStyles, createArtStyle, getSimilarArtists, getQuestionDb
     } = require('../controllers/apiController');
 
 const router = new Router({
@@ -12,6 +12,7 @@ const router = new Router({
 });
 
     router
+        .get('/questionDB',                          getQuestionDb)
         // topics
         .get('/topics',                             getAllTopic)
         .get('/topics/:topicId',                    getTopicById)
