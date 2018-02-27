@@ -6,7 +6,7 @@ const Router = require('koa-router'),
         getAllArtist, getArtistById, createArtist, removeArtist, updateArtist,
         getArtStyles, createArtStyle, getSimilarArtists, getQuestionDb
     } = require('../controllers/apiController'),
-    {getQuestionsGen, removeQuesionsGen} = require('../controllers/genController');
+    {getQuestionsGen, removeQuesionGen} = require('../controllers/genController');
 
 const router = new Router({
     prefix: '/api'
@@ -34,7 +34,7 @@ const router = new Router({
         // >>> Recommender system <<<
         // artists
         .get('/rs/questionsGen/:topicId',           KoaBody(), getQuestionsGen)
-        .delete('/rs/questionsGen/:quesionsGenId',   removeQuesionsGen)
+        .delete('/rs/questionsGen/:questionsGenId', removeQuesionGen)
         //
         .get('/rs/artists',                         getAllArtist)
         .get('/rs/artists/:artistId',               getArtistById)

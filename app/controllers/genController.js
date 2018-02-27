@@ -32,21 +32,21 @@ async function getQuestionsGen (ctx, next) {
   await next();
 }  
 
-async function removeQuesionsGen (ctx, next) {
-  if (!mongoose.Types.ObjectId.isValid(ctx.params.quesionsGenId)) {
+async function removeQuesionGen (ctx, next) {
+  if (!mongoose.Types.ObjectId.isValid(ctx.params.questionsGenId)) {
     ctx.throw(404);
   }
 
-  let quesionsGen = await quesionsGen.findById(ctx.params.quesionsGenId);
+  let questionGen = await QuestionGen.findById(ctx.params.questionsGenId);
 
-  if (!quesionsGen) {
+  if (!questionGen) {
       ctx.throw(404);
   }
 
-  await quesionsGen.remove();
+  await questionGen.remove();
   ctx.status = 204;
 
   await next();
 }
 
-module.exports = {getQuestionsGen, removeQuesionsGen}
+module.exports = {getQuestionsGen, removeQuesionGen}
