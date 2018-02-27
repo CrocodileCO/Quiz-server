@@ -5,14 +5,15 @@ const Router = require('koa-router'),
         getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, parseArtistStyle,
         getAllArtist, getArtistById, createArtist, removeArtist, updateArtist,
         getArtStyles, createArtStyle, getSimilarArtists, getQuestionDb
-    } = require('../controllers/apiController');
+    } = require('../controllers/apiController'),
+    {getQuestionsGen, removeQuesionsGen} = require('../controllers/genController');
 
 const router = new Router({
     prefix: '/api'
 });
 
     router
-        .get('/questionDB',                          getQuestionDb)
+        // .get('/questionDB',                          getQuestionDb)
         // topics
         .get('/topics',                             getAllTopic)
         .get('/topics/:topicId',                    getTopicById)
@@ -32,6 +33,9 @@ const router = new Router({
         
         // >>> Recommender system <<<
         // artists
+        .get('/rs/questionsGen/:topicId',           KoaBody(), getQuestionsGen)
+        .delete('/rs/quesionsGen/:quesionsGenId',   removeQuesionsGen)
+        //
         .get('/rs/artists',                         getAllArtist)
         .get('/rs/artists/:artistId',               getArtistById)
         .post('/rs/artists/',                       KoaBody(), createArtist)

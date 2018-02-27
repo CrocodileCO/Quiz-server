@@ -9,6 +9,7 @@ const Artist = require('../models/artist');
 const ArtStyle = require('../models/artStyle')
 // TODO delete
 const fs = require('fs');
+const QuestionGen = require('../models/questionGen');
 // const osmosis = require('osmosis');
 // 
 // ============== TOPICS ====================
@@ -354,9 +355,13 @@ async function getSimilarArtists (ctx, next) {
     await next(); 
 }
 async function getQuestionDb (ctx, next) {
-    let questions = await fs.readFileSync('test1.json','utf8');
-    ctx.body = questions;
+    let questions = JSON.parse(await fs.readFileSync('test_DB.json','utf8'));
+    for (let i = 0; i < questions.length; i++) {
+       // console.log(questions[i]);
+        await QuestionGen.create(pick(questions[i],QuestionGen.publicFields));
+    } 
 
+    ctx.body = "OK"
     await next();
 }
 
