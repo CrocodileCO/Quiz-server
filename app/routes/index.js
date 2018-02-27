@@ -34,7 +34,7 @@ const router = new Router({
         // >>> Recommender system <<<
         // artists
         .get('/rs/questionsGen/:topicId',           KoaBody(), getQuestionsGen)
-        .delete('/rs/quesionsGen/:quesionsGenId',   removeQuesionsGen)
+        .delete('/rs/questionsGen/:quesionsGenId',   removeQuesionsGen)
         //
         .get('/rs/artists',                         getAllArtist)
         .get('/rs/artists/:artistId',               getArtistById)
