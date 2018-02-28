@@ -4,7 +4,7 @@ const Router = require('koa-router'),
         getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion,
         getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, parseArtistStyle,
         getAllArtist, getArtistById, createArtist, removeArtist, updateArtist,
-        getArtStyles, createArtStyle, getSimilarArtists, getQuestionDb
+        getArtStyles, createArtStyle, getSimilarArtists, getQuestionDb, getAllGroups, getGroupById, createGroup, updateGroup, removeGroup
     } = require('../controllers/apiController'),
     {getQuestionsGen, removeQuesionGen} = require('../controllers/genController');
 
@@ -13,6 +13,12 @@ const router = new Router({
 });
 
     router
+        // groups
+        .get('/groups',                             getAllGroups)
+        .get('/groups/:groupId',                    getGroupById)
+        .post('/groups/',                           KoaBody(), createGroup)
+        .patch('/groups/:groupId',                  KoaBody(), updateGroup)
+        .delete('/groups/:groupId',                 removeGroup)
         // .get('/questionDB',                          getQuestionDb)
         // topics
         .get('/topics',                             getAllTopic)

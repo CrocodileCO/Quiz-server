@@ -3,12 +3,17 @@ const mongoose = require('mongoose');
 const topicSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: "Название категории не должено быть пустым.",
+    required: "Название топика не должено быть пустым.",
     unique: "Такое название уже существует"
   },
   imageUrl: {
     type: String,
-    required: "у категории должна быть картинка"
+    required: "у топика должна быть картинка"
+  },
+  groupId: {
+    type:     mongoose.Schema.Types.ObjectId,
+    ref:      'Group',
+    required: "У топика должна быть группа"
   }
 }, {
   timestamps: true,
@@ -33,6 +38,6 @@ topicSchema.virtual('questions', {
   foreignField: 'topicId' // is equal to `foreignField`
 });
 
-topicSchema.statics.publicFields = ['title', 'imageUrl'];
+topicSchema.statics.publicFields = ['title', 'imageUrl','groupId'];
 
 module.exports = mongoose.model('Topic', topicSchema);

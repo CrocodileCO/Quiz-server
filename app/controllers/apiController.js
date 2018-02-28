@@ -7,11 +7,61 @@ const Topic = require('../models/topic');
 const Question = require('../models/question');
 const Artist = require('../models/artist');
 const ArtStyle = require('../models/artStyle')
+const Group = require('../models/group')
 // TODO delete
 const fs = require('fs');
 const QuestionGen = require('../models/questionGen');
 // const osmosis = require('osmosis');
-// 
+
+// ============== GROUPS ====================
+async function loadGroupById (ctx) {
+  if (!mongoose.Types.ObjectId.isValid(ctx.params.groupId)) 
+    ctx.throw(404);
+
+  ctx.groupById = await Group.findById(ctx.params.groupId);
+
+  if (!ctx.groupById) 
+      ctx.throw(404);
+}
+
+async function getAllGroups (ctx, next) {
+    let groups = await Group.find({}).populate('topics');
+    ctx.status = 200;
+    ctx.body = groups.map(g => g.toObject());
+    await next(); 
+}
+
+async function getGroupById (ctx, next) {
+    await loadGroupById(ctx);
+    ctx.body = ctx.groupById.toObject();
+    await next();
+}
+/**
+ * @example curl -XPOST "http://localhost:3000/api/groups" -d '{"title":"Остальное"}' -H 'Content-Type: application/json'
+ */
+async function createGroup (ctx, next) {
+    let group = await Group.create(pick(ctx.request.body, Group.publicFields));
+    ctx.body = group.toObject();
+    ctx.status = 201;
+    await next();
+}
+
+async function updateGroup (ctx, next) {
+    await loadGroupById(ctx);
+    Object.assign(ctx.groupById, pick(ctx.request.body, Group.publicFields));
+    await ctx.groupById.save();
+    ctx.body = ctx.groupById.toObject();
+    await next();
+}
+
+async function removeGroup(ctx,next) {
+    await loadGroupById(ctx);
+    await ctx.groupById.remove();
+    ctx.status = 204;
+    await next();
+}
+
+
 // ============== TOPICS ====================
 /**
  * @example curl -XGET "http://localhost:3000/api/topics"
@@ -44,7 +94,7 @@ async function getTopicById(ctx, next) {
 }
 
 /**
- * @example curl -XPOST "http://localhost:3000/api/topics" -d '{"title":"new Topic", "imageUrl":"http://memesmix.net/media/created/vdimts.jpg"}' -H 'Content-Type: application/json'
+ * @example curl -XPOST "http://localhost:3000/api/topics" -d '{"title":"new Topic", "imageUrl":"http://memesmix.net/media/created/vdimts.jpg", "groupId":"5a9671abe87357195c1f9868"}' -H 'Content-Type: application/json'
  */
 async function createTopic(ctx, next) {
     let topic = await Topic.create(pick(ctx.request.body, Topic.publicFields));
@@ -391,4 +441,4 @@ async function getQuestionDb (ctx, next) {
 //     //}
 // }
 
-module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, getAllArtist, getArtistById, createArtist, removeArtist, updateArtist, getArtStyles, createArtStyle, getSimilarArtists, getQuestionDb};
+module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, getAllArtist, getArtistById, createArtist, removeArtist, updateArtist, getArtStyles, createArtStyle, getSimilarArtists, getQuestionDb, getAllGroups, getGroupById, createGroup, updateGroup, removeGroup};
