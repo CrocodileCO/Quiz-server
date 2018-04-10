@@ -25,7 +25,10 @@ async function loadGroupById (ctx) {
 }
 
 async function getAllGroups (ctx, next) {
-    let groups = await Group.find({}).populate('topics');
+    let groups = await Group.find({}).sort('title').populate('topics');
+    // let tmp = groups.splice(0,1);
+    // console.log(tmp);
+    // groups.push(tmp);
     ctx.status = 200;
     ctx.body = groups.map(g => g.toObject());
     await next(); 
