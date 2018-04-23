@@ -1,37 +1,39 @@
 const mongoose = require('mongoose');
+const crypto = require('crypto'); // crypto module for node.js for e.g. creating hashes
 
-// uniqueValidator validation is not atomic! unsafe!
 const userSchema = new mongoose.Schema({
+  displayName: String,
   email: {
     type: String,
-    required: "E-mail пользователя не должен быть пустым.",
-    validate: [
-      {
-        validator(value) {
-          return /^[-.\w]+@([\w-]+\.)+[\w-]{2,12}$/.test(value);
-        },
-        msg:       'Некорректный email.'
-      }
-    ],
-    unique: "Такой email уже существует"
+    required: 'e-mail is required',
+    unique: 'this e-mail already exist'
   },
-  displayName: {
-    type: String,
-    required: "У пользователя должно быть имя",
-    unique: "Такое имя уже существует"
-  }
+  passwordHash: String,
+  salt: String,
 }, {
-  timestamps: true,
-  /* @see mongoose
-  toObject: {
-    transform(doc, ret) {
-      // remove the __v of every document before returning the result
-      delete ret.__v;
-      return ret;
-    }
-  }*/
+  timestamps: true
 });
 
-userSchema.statics.publicFields = ['email', 'displayName'];
+userSchema.virtual('password')
+.set(function (password) {
+  this._plainPassword = password;
+  if (password) {
+    this.salt = crypto.randomBytes(128).toString('base64');
+    this.passwordHash = crypto.pbkdf2Sync(password, this.salt, 1, 128, 'sha1');
+  } else {
+    this.salt = undefined;
+    this.passwordHash = undefined;
+  }
+})
 
-module.exports = mongoose.model('User', userSchema);
+.get(function () {
+  return this._plainPassword;
+});
+
+userSchema.methods.checkPassword = function (password) {
+  if (!password) return false;
+  if (!this.passwordHash) return false;
+  return crypto.pbkdf2Sync(password, this.salt, 1, 128, 'sha1') == this.passwordHash;
+};
+
+const User = mongoose.model('User', userSchema);

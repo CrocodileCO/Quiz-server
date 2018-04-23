@@ -4,9 +4,12 @@ const Router = require('koa-router'),
         getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion,
         getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, parseArtistStyle,
         getAllArtist, getArtistById, createArtist, removeArtist, updateArtist,
-        getArtStyles, createArtStyle, getSimilarArtists, getQuestionDb, getAllGroups, getGroupById, createGroup, updateGroup, removeGroup
+        getArtStyles, createArtStyle, getSimilarArtists, getAllGroups, getGroupById, createGroup, updateGroup, removeGroup, getQuestionDb
     } = require('../controllers/apiController'),
-    {getQuestionsGen, removeQuesionGen} = require('../controllers/genController');
+    {   getQuestionsGen, removeQuesionGen, getRecSystemByTopic, createRecSystem, updateRecSystem, removeRecSystem, getCriterionsByRecSystem, getRecValuesByRecSystem,
+        getCriterionById, createCriterion, updateCriterion, removeCriterion,
+        createCriterionValue, updateCriterionValue, removeCriterionValue,
+        createRecValue, updateRecValue, removeRecValue} = require('../controllers/genController');
 
 const router = new Router({
     prefix: '/api'
@@ -35,13 +38,32 @@ const router = new Router({
         .get('/questions/:questionId/inc_quantity', incrementQuantityAnswer)
         // topic - question
         .get('/topics/:topicId/questions',          getAllQuestionsByTopic)
-        .get('/topics/:topicId/rnd',                KoaBody(),getRandomQuestionsByTopic)
-        
+        .get('/topics/:topicId/rnd',                KoaBody(),getRandomQuestionsByTopic)        
         // >>> Recommender system <<<
-        // artists
         .get('/rs/questionsGen/:topicId',           KoaBody(), getQuestionsGen)
         .delete('/rs/questionsGen/:questionsGenId', removeQuesionGen)
-        //
+        // recSystem 
+        .get('/rs/topics/:topicId/recSystem',       getRecSystemByTopic)
+        .post('/rs/recSystems/',                    KoaBody(), createRecSystem)
+        .patch('/rs/recSystems/:recSystemId',       KoaBody(), updateRecSystem)
+        .delete('/rs/recSystems/:recSystemId',      removeRecSystem)
+        .get('/rs/recSystems/:recSystemId/criterions', getCriterionsByRecSystem)
+        .get('/rs/recSystems/:recSystemId/recValues', getRecValuesByRecSystem)
+        // criterion
+        .get('/rs/criterions/:criterionId',         getCriterionById)
+        .post('/rs/criterions/',                    KoaBody(), createCriterion)
+        .patch('/rs/criterions/:criterionId',       KoaBody(), updateCriterion)
+        .delete('/rs/criterions/:criterionId',      removeCriterion)
+        // criterionValue
+        // .get('/rs/criterions/:criterionId/criterionValues', getCriterionValuesByCriterion)
+        .post('/rs/criterionValues/',               KoaBody(), createCriterionValue)
+        .patch('/rs/criterionValues/:criterionValueId', KoaBody(), updateCriterionValue)
+        .delete('/rs/criterionValues/:criterionValueId', removeCriterionValue)
+        // rec value
+        .post('/rs/recValues/',                     KoaBody(), createRecValue)
+        .patch('/rs/recValues/:recValueId',         KoaBody(), updateRecValue)
+        .delete('/rs/recValues/:recValueId',        removeRecValue)
+        // artists
         .get('/rs/artists',                         getAllArtist)
         .get('/rs/artists/:artistId',               getArtistById)
         .post('/rs/artists/',                       KoaBody(), createArtist)
@@ -51,6 +73,7 @@ const router = new Router({
         // artStyle
         .get('/rs/artstyles',                       getArtStyles)
         .post('/rs/artstyles/',                     KoaBody(), createArtStyle);
+        
 
 module.exports = {
     routes () { return router.routes() },

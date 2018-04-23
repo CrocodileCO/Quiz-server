@@ -2,7 +2,7 @@ const myDb = require('../models/testDbManager');
 const mongoose = require('../models/mongoose');
 const pick = require('lodash/pick');
 
-const User = require('../models/user');
+// const User = require('../models/user');
 const Topic = require('../models/topic');
 const Question = require('../models/question');
 const Artist = require('../models/artist');
@@ -405,7 +405,7 @@ async function getSimilarArtists (ctx, next) {
     await next(); 
 }
 async function getQuestionDb (ctx, next) {
-    let questions = JSON.parse(await fs.readFileSync('test_DB.json','utf8'));
+    let questions = JSON.parse(await fs.readFileSync('test.json','utf8'));
     for (let i = 0; i < questions.length; i++) {
        // console.log(questions[i]);
         await QuestionGen.create(pick(questions[i],QuestionGen.publicFields));
@@ -441,4 +441,4 @@ async function getQuestionDb (ctx, next) {
 //     //}
 // }
 
-module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, getAllArtist, getArtistById, createArtist, removeArtist, updateArtist, getArtStyles, createArtStyle, getSimilarArtists, getQuestionDb, getAllGroups, getGroupById, createGroup, updateGroup, removeGroup};
+module.exports = {getAllTopic, getTopicById, createTopic, removeTopic, updateTopic, getAllQuestion, getQuestionById, createQuestion, removeQuestion, updateQuestion, getAllQuestionsByTopic, getRandomQuestionsByTopic, incrementQuantityAnswer, getAllArtist, getArtistById, createArtist, removeArtist, updateArtist, getArtStyles, createArtStyle, getSimilarArtists, getQuestionDb, getAllGroups, getGroupById, createGroup, updateGroup, removeGroup, getQuestionDb};
